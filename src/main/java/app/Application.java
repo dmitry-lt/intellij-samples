@@ -1,4 +1,4 @@
-package com.address.app;
+package app;
 
 import com.address.protobuf.AddressBookProtos;
 
