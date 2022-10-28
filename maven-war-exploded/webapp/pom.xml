@@ -19,9 +19,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.example</groupId>
-			<artifactId>api</artifactId>
+			<artifactId>hello-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<type>pom</type>
 		</dependency>
 
 		<dependency>

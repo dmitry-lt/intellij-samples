@@ -8,6 +8,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>webapp</module>
-        <module>api</module>
+        <module>hello-service</module>
     </modules>
 </project>
