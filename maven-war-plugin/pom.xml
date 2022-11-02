@@ -8,6 +8,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>webapp</module>
-        <module>webapp-dependency</module>
+        <module>dependency</module>
     </modules>
 </project>
