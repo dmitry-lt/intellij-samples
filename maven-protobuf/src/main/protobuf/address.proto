@@ -2,15 +2,14 @@ syntax = "proto2";
 
 package protobuf;
 
-option java_package = "com.address.protobuf";
+option java_package = "org.example.protobuf";
 option java_outer_classname = "AddressBookProtos";
 
 message Person {
-  required string name = 1;
-  required int32 id = 2;
-  optional string email = 4;
-
+  required int32 id = 1;
+  required string name = 2;
   repeated string numbers = 3;
+  optional string email = 4;
 }
 
 message AddressBook {

@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.21.8</version>
+            <version>3.22.0</version>
         </dependency>
     </dependencies>
 
@@ -54,7 +54,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${basedir}/target/generated-sources</source>
+                                <source>${project.basedir}/target/generated-sources</source>
                             </sources>
                         </configuration>
                     </execution>
