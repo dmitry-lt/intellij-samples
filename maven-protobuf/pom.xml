@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.22.0</version>
+            <version>3.23.0</version>
         </dependency>
     </dependencies>
 
@@ -35,8 +35,9 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <protocVersion>3.8.0</protocVersion>
+                            <protocVersion>3.23.0</protocVersion>
                             <includeStdTypes>true</includeStdTypes>
+                            <optimizeCodegen>false</optimizeCodegen>
                         </configuration>
                     </execution>
                 </executions>
