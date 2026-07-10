@@ -3,8 +3,6 @@ package dev.example.cli;
 import dev.example.cli.proto.GreetProtos.GreetRequest;
 import java.io.PrintStream;
 import java.util.Objects;
-import java.util.jar.Manifest;
-import java.net.URL;
 
 public final class Main {
 
@@ -57,24 +55,19 @@ public final class Main {
         GreetRequest request = GreetRequest.newBuilder().setName(name).build();
         out.printf("Hello, %s!%n", request.getName());
         out.println("  " + AppDefinitionMeta.DESCRIPTION);
+        out.println("version: " + version());
 
         return 0;
     }
 
     private static String version() {
         try {
-            URL url = Main.class.getClassLoader()
-                    .getResource("META-INF/MANIFEST.MF");
-            if (url != null) {
-                try (var stream = url.openStream()) {
-                    Manifest manifest = new Manifest(stream);
-                    String v = manifest.getMainAttributes().getValue("Implementation-Version");
-                    if (v != null) return v;
-                }
-            }
-        } catch (Exception ignored) {
+            Class<?> buildInfo = Class.forName("dev.example.cli.generated.BuildInfo");
+            String v = (String) buildInfo.getField("VERSION").get(null);
+            if (v != null && !v.isEmpty()) return v;
+        } catch (ReflectiveOperationException ignored) {
         }
-        return "dev";
+        return "unknown (run with -P generate-build-info to embed version)";
     }
 
     private static void printUsage(PrintStream stream) {

@@ -37,7 +37,7 @@ class MainTest {
 
         assertAll(
                 () -> assertEquals(0, result.exitCode()),
-                () -> assertTrue(result.stdout().contains(Main.APP_NAME)),
+                () -> assertTrue(result.stdout().startsWith(Main.APP_NAME)),
                 () -> assertEquals("", result.stderr()));
     }
 
