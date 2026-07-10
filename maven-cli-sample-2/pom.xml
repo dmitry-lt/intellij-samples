@@ -30,6 +30,7 @@
     <protobuf.version>3.23.0</protobuf.version>
     <protoc.jar.plugin.version>3.11.4</protoc.jar.plugin.version>
     <build.helper.plugin.version>3.6.1</build.helper.plugin.version>
+    <maven.clean.plugin.version>3.4.1</maven.clean.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -90,6 +91,11 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${build.helper.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

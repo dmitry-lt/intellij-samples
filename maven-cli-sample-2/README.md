@@ -31,7 +31,7 @@ properties (`@app.name@`, `@project.version@`) and compiles the result into the 
 Run with the profile:
 
 ```bash
-./mvnw compile exec:java -P generate-build-info
+./mvnw clean compile exec:java -P generate-build-info
 ```
 
 Run without the profile (default — `BuildInfo` class is not generated):
