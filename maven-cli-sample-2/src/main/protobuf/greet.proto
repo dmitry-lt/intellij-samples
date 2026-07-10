@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package cli;
+
+option java_package = "dev.example.cli.proto";
+option java_outer_classname = "GreetProtos";
+
+message GreetRequest {
+  string name = 1;
+}

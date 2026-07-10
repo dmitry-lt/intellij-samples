@@ -23,6 +23,8 @@
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
     <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
     <exec.mainClass>dev.example.cli.Main</exec.mainClass>
+    <protobuf.version>3.23.0</protobuf.version>
+    <protoc.jar.plugin.version>3.11.4</protoc.jar.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -38,6 +40,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -79,6 +86,24 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.os72</groupId>
+        <artifactId>protoc-jar-maven-plugin</artifactId>
+        <version>${protoc.jar.plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <protocVersion>${protobuf.version}</protocVersion>
+              <optimizeCodegen>false</optimizeCodegen>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>

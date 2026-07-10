@@ -1,5 +1,6 @@
 package dev.example.cli;
 
+import dev.example.cli.proto.GreetProtos.GreetRequest;
 import java.io.PrintStream;
 import java.util.Objects;
 import java.util.jar.Manifest;
@@ -53,7 +54,8 @@ public final class Main {
             return 2;
         }
 
-        out.printf("Hello, %s!%n", name);
+        GreetRequest request = GreetRequest.newBuilder().setName(name).build();
+        out.printf("Hello, %s!%n", request.getName());
         return 0;
     }
 
