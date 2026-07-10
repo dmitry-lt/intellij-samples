@@ -77,6 +77,6 @@ public final class Main {
 
     private static void printUsage(PrintStream stream) {
         stream.printf("Usage: %s [--help | --version | [<name>]]%n", APP_NAME);
-        stream.println("  Greets the supplied name, or 'World' if no name is given.");
+        stream.println("  " + AppDefinitionMeta.DESCRIPTION);
     }
 }
