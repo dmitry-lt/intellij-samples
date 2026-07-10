@@ -28,18 +28,17 @@ public final class Main {
             out.printf("%s %s (Java %d)%n", BuildInfo.NAME, BuildInfo.VERSION, BuildInfo.JAVA_RELEASE);
             return 0;
         }
-        if (args.length != 1) {
-            err.println("Expected exactly one name.");
+        if (args.length > 1) {
+            err.println("Expected exactly zero or one name.");
             printUsage(err);
-            return 2;
-        }
-        if (args[0].startsWith("-")) {
-            err.println("Unknown option: " + args[0]);
-            printUsage(err);
+            if (args[0].startsWith("-")) {
+                err.println("Unknown option: " + args[0]);
+                printUsage(err);
+            }
             return 2;
         }
 
-        String name = args[0].strip();
+        String name = args.length == 0 ? "World" : args[0].strip();
         if (name.isEmpty()) {
             err.println("Name must not be blank.");
             printUsage(err);
