@@ -85,6 +85,7 @@
             <configuration>
               <protocVersion>${protobuf.version}</protocVersion>
               <optimizeCodegen>false</optimizeCodegen>
+              <outputDirectory>${project.build.directory}/generated-sources/proto</outputDirectory>
             </configuration>
           </execution>
         </executions>
