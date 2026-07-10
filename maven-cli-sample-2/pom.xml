@@ -29,6 +29,7 @@
     <exec.mainClass>dev.example.cli.Main</exec.mainClass>
     <protobuf.version>3.23.0</protobuf.version>
     <protoc.jar.plugin.version>3.11.4</protoc.jar.plugin.version>
+    <build.helper.plugin.version>3.6.1</build.helper.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -84,6 +85,11 @@
           <groupId>com.github.os72</groupId>
           <artifactId>protoc-jar-maven-plugin</artifactId>
           <version>${protoc.jar.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build.helper.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

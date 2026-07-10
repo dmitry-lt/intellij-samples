@@ -1,6 +1,6 @@
 # Maven CLI Sample 2
 
-A multi-module Maven CLI project demonstrating **protobuf source generation** and **annotation processing**.
+A multi-module Maven CLI project demonstrating **protobuf source generation**, **annotation processing**, and **build profiles**.
 
 ## Modules
 
@@ -21,16 +21,31 @@ Pass a name:
 ./mvnw compile exec:java -Dexec.args="Alice"
 ```
 
-## Other commands
+## Profiles
 
-### Run tests
+### `generate-build-info` (optional)
+
+Adds an extra `generate-sources` step that filters `src/main/codegen/…/BuildInfo.java` with Maven
+properties (`@app.name@`, `@project.version@`) and compiles the result into the JAR.
+
+Run with the profile:
 
 ```bash
-./mvnw test
+./mvnw compile exec:java -P generate-build-info
 ```
 
-### Clean
+Run without the profile (default — `BuildInfo` class is not generated):
 
 ```bash
-./mvnw clean
+./mvnw compile exec:java
+```
+
+## Other commands
+
+```bash
+# Run tests
+./mvnw test
+
+# Full build
+./mvnw verify
 ```
