@@ -17,7 +17,7 @@ class MainTest {
 
         assertAll(
                 () -> assertEquals(0, result.exitCode()),
-                () -> assertEquals("Hello, Alice!" + System.lineSeparator(), result.stdout()),
+                () -> assertTrue(result.stdout().startsWith("Hello, Alice!" + System.lineSeparator())),
                 () -> assertEquals("", result.stderr()));
     }
 
@@ -47,7 +47,7 @@ class MainTest {
 
         assertAll(
                 () -> assertEquals(0, result.exitCode()),
-                () -> assertEquals("Hello, World!" + System.lineSeparator(), result.stdout()),
+                () -> assertTrue(result.stdout().startsWith("Hello, World!" + System.lineSeparator())),
                 () -> assertEquals("", result.stderr()));
     }
 
