@@ -15,7 +15,6 @@
 
   <properties>
     <app.name>maven-cli-sample-2</app.name>
-    <exec.mainClass>dev.example.cli.Main</exec.mainClass>
   </properties>
 
   <dependencies>
@@ -89,6 +88,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
+          <skip>false</skip>
           <mainClass>${exec.mainClass}</mainClass>
         </configuration>
       </plugin>

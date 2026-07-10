@@ -56,6 +56,8 @@ public final class Main {
 
         GreetRequest request = GreetRequest.newBuilder().setName(name).build();
         out.printf("Hello, %s!%n", request.getName());
+        out.println("  " + AppDefinitionMeta.DESCRIPTION);
+
         return 0;
     }
 

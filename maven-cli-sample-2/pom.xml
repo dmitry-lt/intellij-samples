@@ -26,6 +26,7 @@
     <maven.surefire.plugin.version>3.5.2</maven.surefire.plugin.version>
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
     <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+    <exec.mainClass>dev.example.cli.Main</exec.mainClass>
     <protobuf.version>3.23.0</protobuf.version>
     <protoc.jar.plugin.version>3.11.4</protoc.jar.plugin.version>
   </properties>
@@ -74,6 +75,10 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <version>${exec.maven.plugin.version}</version>
+          <configuration>
+            <skip>true</skip>
+            <mainClass>${exec.mainClass}</mainClass>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>com.github.os72</groupId>
