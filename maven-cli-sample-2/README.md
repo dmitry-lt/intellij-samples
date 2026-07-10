@@ -28,3 +28,9 @@ Pass a name:
 ```bash
 ./mvnw test
 ```
+
+### Clean
+
+```bash
+./mvnw clean
+```
