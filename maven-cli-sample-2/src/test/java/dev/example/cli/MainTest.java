@@ -42,13 +42,13 @@ class MainTest {
     }
 
     @Test
-    void failsOnNoArgs() {
+    void greetsWorldWhenNoArgs() {
         var result = invoke();
 
         assertAll(
-                () -> assertEquals(2, result.exitCode()),
-                () -> assertEquals("", result.stdout()),
-                () -> assertTrue(result.stderr().contains("Expected a name")));
+                () -> assertEquals(0, result.exitCode()),
+                () -> assertEquals("Hello, World!" + System.lineSeparator(), result.stdout()),
+                () -> assertEquals("", result.stderr()));
     }
 
     @Test

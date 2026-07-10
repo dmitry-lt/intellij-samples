@@ -34,25 +34,19 @@ public final class Main {
             return 0;
         }
 
-        if (args.length == 0) {
-            err.println("Expected a name argument.");
-            printUsage(err);
-            return 2;
-        }
-
         if (args.length > 1) {
             err.println("Too many arguments.");
             printUsage(err);
             return 2;
         }
 
-        if (args[0].startsWith("-")) {
+        if (args.length == 1 && args[0].startsWith("-")) {
             err.println("Unknown option: " + args[0]);
             printUsage(err);
             return 2;
         }
 
-        String name = args[0].strip();
+        String name = args.length == 0 ? "World" : args[0].strip();
         if (name.isEmpty()) {
             err.println("Name must not be blank.");
             printUsage(err);
@@ -80,7 +74,7 @@ public final class Main {
     }
 
     private static void printUsage(PrintStream stream) {
-        stream.printf("Usage: %s [--help | --version | <name>]%n", APP_NAME);
-        stream.println("  Greets the supplied name.");
+        stream.printf("Usage: %s [--help | --version | [<name>]]%n", APP_NAME);
+        stream.println("  Greets the supplied name, or 'World' if no name is given.");
     }
 }
