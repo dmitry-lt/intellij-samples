@@ -1,0 +1,96 @@
+#!/bin/sh
+set -eu
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+properties_file="$script_dir/.mvn/wrapper/maven-wrapper.properties"
+
+read_property() {
+    sed -n "s/^$1=//p" "$properties_file" | tail -n 1 | tr -d '\r'
+}
+
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+[ -f "$properties_file" ] || die "Missing Maven Wrapper properties: $properties_file"
+distribution_url=$(read_property distributionUrl)
+[ -n "$distribution_url" ] || die "distributionUrl is not configured in $properties_file"
+expected_sha256=$(read_property distributionSha256Sum)
+
+archive_name=${distribution_url##*/}
+distribution_name=${archive_name%.zip}
+distribution_name=${distribution_name%-bin}
+maven_user_home=${MAVEN_USER_HOME:-${HOME:-"$script_dir/.m2"}}
+maven_home="$maven_user_home/wrapper/dists/$distribution_name"
+maven_command="$maven_home/bin/mvn"
+
+if [ ! -x "$maven_command" ]; then
+    temp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t mvnw)
+    cleanup() {
+        rm -rf -- "$temp_dir"
+    }
+    trap cleanup EXIT HUP INT TERM
+    archive_path="$temp_dir/$archive_name"
+
+    printf 'Downloading Maven from %s\n' "$distribution_url"
+    if command -v curl >/dev/null 2>&1; then
+        curl --fail --location --silent --show-error --output "$archive_path" "$distribution_url"
+    elif command -v wget >/dev/null 2>&1; then
+        wget --quiet --output-document="$archive_path" "$distribution_url"
+    else
+        command -v javac >/dev/null 2>&1 || die "Neither curl, wget, nor javac is available to download Maven."
+        cat > "$temp_dir/Download.java" <<'JAVA'
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+final class Download {
+    public static void main(String[] arguments) throws Exception {
+        try (var input = URI.create(arguments[0]).toURL().openStream()) {
+            Files.copy(input, Path.of(arguments[1]));
+        }
+    }
+}
+JAVA
+        javac -d "$temp_dir" "$temp_dir/Download.java"
+        java -cp "$temp_dir" Download "$distribution_url" "$archive_path"
+    fi
+
+    if [ -n "$expected_sha256" ]; then
+        if command -v sha256sum >/dev/null 2>&1; then
+            actual_sha256=$(sha256sum "$archive_path" | awk '{print $1}')
+        elif command -v shasum >/dev/null 2>&1; then
+            actual_sha256=$(shasum -a 256 "$archive_path" | awk '{print $1}')
+        else
+            die "A distributionSha256Sum is configured, but no SHA-256 tool is available."
+        fi
+        [ "$actual_sha256" = "$expected_sha256" ] || \
+            die "Maven distribution SHA-256 mismatch: expected $expected_sha256 but got $actual_sha256"
+    fi
+
+    if command -v unzip >/dev/null 2>&1; then
+        unzip -q "$archive_path" -d "$temp_dir"
+    else
+        command -v jar >/dev/null 2>&1 || die "Neither unzip nor jar is available to extract Maven."
+        (cd "$temp_dir" && jar xf "$archive_path")
+    fi
+
+    extracted_home=
+    for candidate in "$temp_dir"/apache-maven-*; do
+        if [ -x "$candidate/bin/mvn" ]; then
+            extracted_home=$candidate
+            break
+        fi
+    done
+    [ -n "$extracted_home" ] || die "The Maven archive did not contain bin/mvn."
+
+    mkdir -p -- "$(dirname -- "$maven_home")"
+    if ! mv -- "$extracted_home" "$maven_home" 2>/dev/null; then
+        [ -x "$maven_command" ] || die "Could not install Maven at $maven_home"
+    fi
+    cleanup
+    trap - EXIT HUP INT TERM
+fi
+
+exec "$maven_command" "$@"
