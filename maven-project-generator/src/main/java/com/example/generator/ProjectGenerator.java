@@ -20,20 +20,20 @@ public class ProjectGenerator {
 
         List<String> modules = new ArrayList<>();
         modules.add("core");
-        for (int i = 1; i <= config.n; i++) {
+        for (int i = 1; i <= config.serviceCount; i++) {
             modules.add("service-" + i);
         }
 
         writeParentPom(root, modules);
         generateCoreModule(root);
-        for (int i = 1; i <= config.n; i++) {
+        for (int i = 1; i <= config.serviceCount; i++) {
             generateServiceModule(root, i);
         }
 
         System.out.println("Generated project at: " + root.toAbsolutePath());
-        System.out.println("  modules : 1 core + " + config.n + " services");
-        System.out.println("  classes : " + config.m + " per module");
-        System.out.println("  methods : " + config.k + " per class");
+        System.out.println("  modules : 1 core + " + config.serviceCount + " services");
+        System.out.println("  classes : " + config.classesPerModule + " per module");
+        System.out.println("  methods : " + config.methodsPerClass + " per class");
     }
 
     // -------------------------------------------------------------------------
@@ -78,7 +78,7 @@ public class ProjectGenerator {
 
         writeModulePom(moduleDir, "core", false);
 
-        for (int i = 1; i <= config.m; i++) {
+        for (int i = 1; i <= config.classesPerModule; i++) {
             writeCoreClass(srcDir, packageName, i);
         }
     }
@@ -97,7 +97,7 @@ public class ProjectGenerator {
         writeModulePom(moduleDir, moduleName, true);
 
         String corePackage = config.groupId + ".core";
-        for (int i = 1; i <= config.m; i++) {
+        for (int i = 1; i <= config.classesPerModule; i++) {
             writeServiceClass(srcDir, packageName, serviceIndex, i, corePackage);
         }
     }
@@ -145,7 +145,7 @@ public class ProjectGenerator {
         sb.append("package ").append(packageName).append(";\n\n");
         sb.append("public class ").append(className).append(" {\n\n");
 
-        for (int j = 1; j <= config.k; j++) {
+        for (int j = 1; j <= config.methodsPerClass; j++) {
             sb.append("    public String method").append(j).append("() {\n");
             sb.append("        return \"").append(className).append(".method").append(j).append("\";\n");
             sb.append("    }\n\n");
@@ -168,7 +168,7 @@ public class ProjectGenerator {
         sb.append("    private final ").append(coreClassName).append(" ").append(fieldName)
           .append(" = new ").append(coreClassName).append("();\n\n");
 
-        for (int j = 1; j <= config.k; j++) {
+        for (int j = 1; j <= config.methodsPerClass; j++) {
             sb.append("    public String method").append(j).append("() {\n");
             sb.append("        return ").append(fieldName).append(".method").append(j).append("();\n");
             sb.append("    }\n\n");

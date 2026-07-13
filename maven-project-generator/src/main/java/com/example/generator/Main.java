@@ -11,9 +11,9 @@ import java.nio.file.Paths;
  *   java -jar maven-project-generator.jar [options]
  *
  * Options:
- *   --n <int>          Number of service modules (default: 10)
- *   --m <int>          Classes per module (default: 10)
- *   --k <int>          Methods per class (default: 10)
+ *   --services <int>   Number of service modules (default: 10)
+ *   --classes <int>    Classes per module (default: 10)
+ *   --methods <int>    Methods per class (default: 10)
  *   --output <path>    Output directory (default: ./generated-project)
  *   --groupId <str>    Generated project groupId (default: com.example.generated)
  *   --artifactId <str> Generated project artifactId (default: generated-project)
@@ -22,9 +22,9 @@ import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        int n = 10;
-        int m = 10;
-        int k = 10;
+        int serviceCount = 10;
+        int classesPerModule = 10;
+        int methodsPerClass = 10;
         String output = "./generated-project";
         String groupId = "com.example.generated";
         String artifactId = "generated-project";
@@ -32,13 +32,13 @@ public class Main {
 
         for (int i = 0; i < args.length - 1; i++) {
             switch (args[i]) {
-                case "--n":          n          = Integer.parseInt(args[++i]); break;
-                case "--m":          m          = Integer.parseInt(args[++i]); break;
-                case "--k":          k          = Integer.parseInt(args[++i]); break;
-                case "--output":     output     = args[++i]; break;
-                case "--groupId":    groupId    = args[++i]; break;
-                case "--artifactId": artifactId = args[++i]; break;
-                case "--version":    version    = args[++i]; break;
+                case "--services":   serviceCount    = Integer.parseInt(args[++i]); break;
+                case "--classes":    classesPerModule = Integer.parseInt(args[++i]); break;
+                case "--methods":    methodsPerClass  = Integer.parseInt(args[++i]); break;
+                case "--output":     output           = args[++i]; break;
+                case "--groupId":    groupId          = args[++i]; break;
+                case "--artifactId": artifactId       = args[++i]; break;
+                case "--version":    version          = args[++i]; break;
                 default:
                     System.err.println("Unknown option: " + args[i]);
                     printUsage();
@@ -47,12 +47,14 @@ public class Main {
         }
 
         Path outputPath = Paths.get(output);
-        GeneratorConfig config = new GeneratorConfig(n, m, k, outputPath, groupId, artifactId, version);
+        GeneratorConfig config = new GeneratorConfig(
+                serviceCount, classesPerModule, methodsPerClass,
+                outputPath, groupId, artifactId, version);
         new ProjectGenerator(config).generate();
     }
 
     private static void printUsage() {
-        System.err.println("Usage: java -jar maven-project-generator.jar [--n 10] [--m 10] [--k 10]");
+        System.err.println("Usage: java -jar maven-project-generator.jar [--services 10] [--classes 10] [--methods 10]");
         System.err.println("       [--output ./generated-project] [--groupId com.example.generated]");
         System.err.println("       [--artifactId generated-project] [--version 1.0-SNAPSHOT]");
     }
