@@ -136,10 +136,11 @@ public class ProjectGenerator {
     }
 
     // -------------------------------------------------------------------------
-    // Java class
+    // Java classes
     // -------------------------------------------------------------------------
 
-    private void writeClass(Path srcDir, String packageName, String className, int classIndex) throws IOException {
+    private void writeCoreClass(Path srcDir, String packageName, int classIndex) throws IOException {
+        String className = "CoreClass" + classIndex;
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(packageName).append(";\n\n");
         sb.append("public class ").append(className).append(" {\n\n");
@@ -151,7 +152,29 @@ public class ProjectGenerator {
         }
 
         sb.append("}\n");
+        Files.writeString(srcDir.resolve(className + ".java"), sb.toString());
+    }
 
+    private void writeServiceClass(Path srcDir, String packageName, int serviceIndex,
+                                   int classIndex, String corePackage) throws IOException {
+        String className = "Service" + serviceIndex + "Class" + classIndex;
+        String coreClassName = "CoreClass" + classIndex;
+        String fieldName = "core" + classIndex;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("package ").append(packageName).append(";\n\n");
+        sb.append("import ").append(corePackage).append(".").append(coreClassName).append(";\n\n");
+        sb.append("public class ").append(className).append(" {\n\n");
+        sb.append("    private final ").append(coreClassName).append(" ").append(fieldName)
+          .append(" = new ").append(coreClassName).append("();\n\n");
+
+        for (int j = 1; j <= config.k; j++) {
+            sb.append("    public String method").append(j).append("() {\n");
+            sb.append("        return ").append(fieldName).append(".method").append(j).append("();\n");
+            sb.append("    }\n\n");
+        }
+
+        sb.append("}\n");
         Files.writeString(srcDir.resolve(className + ".java"), sb.toString());
     }
 }
